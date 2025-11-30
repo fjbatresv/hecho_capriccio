@@ -39,6 +39,8 @@ jobs:
             --delete \
             --exclude ".git/*" \
             --exclude ".github/*" \
+            --exclude ".DS_STORE" \
+            --exclude "README.md" \
             --exclude "node_modules/*"
 
       - name: Invalidate CloudFront cache
