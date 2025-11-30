@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Carrito en memoria
     const CART_KEY = 'hecho_capriccio_cart';
-    const WHATSAPP_PHONE = '50257199544';
+    const WHATSAPP_PHONE = '50240769591';
     let cart = loadCart();
 
     const cartFloating = document.querySelector('.cart-floating');
@@ -187,18 +187,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const name = card.querySelector('h3')?.textContent?.trim();
         const btn = card.querySelector('.btn-icon');
         if (name && btn) {
+            btn.setAttribute('aria-label', `Agregar ${name} al carrito`);
             btn.addEventListener('click', () => {
                 addToCart(name);
                 if (cartFloating) {
                     cartFloating.classList.add('open');
+                    cartToggle?.setAttribute('aria-expanded', 'true');
                 }
             });
         }
     });
 
     if (cartToggle && cartFloating) {
+        cartToggle.setAttribute('aria-expanded', 'false');
         cartToggle.addEventListener('click', () => {
-            cartFloating.classList.toggle('open');
+            const isOpen = cartFloating.classList.toggle('open');
+            cartToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         });
     }
 
