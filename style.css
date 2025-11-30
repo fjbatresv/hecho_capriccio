@@ -58,6 +58,13 @@ img {
   display: block;
 }
 
+.icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
 .container {
   max-width: var(--container-width);
   margin: 0 auto;
@@ -114,7 +121,8 @@ img {
 
 .btn-nav {
   background: var(--accent-orange);
-  color: white !important;
+  color: #1a1a1a !important;
+  font-weight: 700;
   padding: 0.5rem 1.5rem;
   border-radius: 50px;
   box-shadow: 0 4px 15px rgba(255, 122, 48, 0.3);
@@ -123,6 +131,7 @@ img {
 .btn-nav:hover {
   background: var(--accent-hover);
   transform: translateY(-2px);
+  color: #1a1a1a !important;
 }
 
 .mobile-menu-btn {
@@ -209,10 +218,6 @@ img {
 
 .btn-outline:hover {
   background: rgba(46, 49, 146, 0.05);
-}
-
-.hero-image img {
-    display: none; /* Hide default img if present */
 }
 
 .hero-gallery {
@@ -333,7 +338,7 @@ img {
   align-self: flex-start;
 }
 
-.btn-icon i {
+.btn-icon .icon {
   width: 18px;
   height: 18px;
 }
@@ -376,7 +381,7 @@ img {
   gap: 0.5rem;
 }
 
-.feature-item i {
+.feature-item .icon {
   color: var(--accent-orange);
   width: 32px;
   height: 32px;
@@ -446,11 +451,19 @@ footer {
   font-size: 1.5rem;
   opacity: 0.9;
   transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .social-links a:hover {
   opacity: 1;
   transform: translateY(-3px);
+}
+
+.social-links .icon {
+  width: 22px;
+  height: 22px;
 }
 
 /* Brand-specific colors */
@@ -479,7 +492,7 @@ footer {
 }
 
 .credits a {
-  color: var(--accent-orange);
+  color: #ffd199;
   font-weight: 600;
   transition: color 0.3s ease;
 }
@@ -636,10 +649,14 @@ footer {
     top: var(--header-height);
     left: 0;
     width: 100%;
-    background: white;
+    background: var(--primary-blue);
     flex-direction: column;
     padding: 2rem;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-links a {
+    color: white;
   }
 
   .nav-links.active {

@@ -35,13 +35,22 @@ jobs:
 
       - name: Sync to S3
         run: |
+          # Activos estáticos: cache largo e inmutable
           aws s3 sync . s3://${{ env.S3_BUCKET }} \
             --delete \
             --exclude ".git/*" \
             --exclude ".github/*" \
-            --exclude ".DS_STORE" \
+            --exclude ".DS_Store" \
             --exclude "README.md" \
-            --exclude "node_modules/*"
+            --exclude "node_modules/*" \
+            --exclude "index.html" \
+            --cache-control "public,max-age=31536000,immutable"
+
+          # HTML: cache corto para poder invalidar con despliegues
+          aws s3 sync . s3://${{ env.S3_BUCKET }} \
+            --exclude "*" \
+            --include "index.html" \
+            --cache-control "public,max-age=300,s-maxage=600"
 
       - name: Invalidate CloudFront cache
         run: |
