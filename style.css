@@ -63,6 +63,8 @@ img {
   height: 20px;
   display: inline-block;
   flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
 }
 
 .container {
@@ -403,7 +405,10 @@ img {
 
 .about-img {
   width: 100%;
-  max-width: 300px; /* Reduced from 450px */
+  max-width: 260px;
+  aspect-ratio: 3 / 4;
+  height: auto;
+  object-fit: cover;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
   transform: rotate(3deg);
@@ -462,8 +467,10 @@ footer {
 }
 
 .social-links .icon {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
+  stroke: none;
+  fill: currentColor;
 }
 
 /* Brand-specific colors */
