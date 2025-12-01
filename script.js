@@ -217,5 +217,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Año dinámico en el footer
+    const yearEl = document.getElementById('current-year');
+    if (yearEl) {
+        yearEl.textContent = new Date().getFullYear();
+    }
+
     renderCart();
 });
