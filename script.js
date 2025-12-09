@@ -54,6 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Carrito en memoria
     const CART_KEY = 'hecho_capriccio_cart';
     const WHATSAPP_PHONE = '50240769591';
+    const PREORDER_ITEMS = [
+        'Nutella Oreo (Rosca Roll 12 porciones)',
+        'Frutilla (Rosca Roll 12 porciones)',
+    ];
+    const PREORDER_NOTE = 'Nota: los sabores Nutella Oreo y Frutilla solo están disponibles como Rosca Roll de 12 porciones para entrega el 23 o 24 de diciembre, bajo pedido. Indica tu fecha preferida.';
     let cart = loadCart();
 
     const cartFloating = document.querySelector('.cart-floating');
@@ -79,15 +84,36 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem(CART_KEY, JSON.stringify(cart));
     }
 
+    /**
+     * Calculate the total quantity of all items currently in the cart.
+     * @returns {number} The sum of `qty` values for every item in the cart.
+     */
     function getCartTotal() {
         return cart.reduce((sum, item) => sum + item.qty, 0);
     }
 
+    /**
+     * Check whether the cart contains any preorder items.
+     *
+     * @returns {boolean} `true` if the cart contains at least one item whose name is listed in `PREORDER_ITEMS`, `false` otherwise.
+     */
+    function hasPreorderItems() {
+        return cart.some(item => PREORDER_ITEMS.includes(item.name));
+    }
+
+    /**
+     * Build a WhatsApp send URL with a pre-filled message describing the current cart and any preorder note.
+     * @returns {string} The WhatsApp API URL including the phone number and an URL-encoded message; the message lists cart items when present or a generic greeting when empty, and appends the preorder note if the cart contains preorder items.
+     */
     function buildWhatsappUrl() {
         const baseMessage = 'Hola, quiero pedir roles de canela.';
-        const detail = cart.length
+        let detail = cart.length
             ? 'Hola, quiero pedir:\n' + cart.map(item => `- ${item.name} x${item.qty}`).join('\n')
             : baseMessage;
+
+        if (cart.length && hasPreorderItems()) {
+            detail += `\n\n${PREORDER_NOTE}`;
+        }
 
         return `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${encodeURIComponent(detail)}`;
     }

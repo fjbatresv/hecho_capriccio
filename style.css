@@ -278,6 +278,8 @@ img {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-card:hover {
@@ -315,10 +317,41 @@ img {
   margin-bottom: 1rem;
 }
 
+.product-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.product-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(46, 49, 146, 0.08);
+  color: var(--primary-blue);
+  border: 1px solid rgba(46, 49, 146, 0.12);
+}
+
+.product-pill.accent {
+  background: rgba(255, 122, 48, 0.15);
+  color: #c04900;
+  border-color: rgba(255, 122, 48, 0.2);
+}
+
+.product-pill.neutral {
+  background: #f5f7ff;
+  color: #2e3192;
+  border-color: rgba(46, 49, 146, 0.12);
+}
+
 .product-info {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex: 1;
 }
 
 .btn-icon {
@@ -338,6 +371,7 @@ img {
   transform: scale(1);
   font-weight: 600;
   align-self: flex-start;
+  margin-top: auto;
 }
 
 .btn-icon .icon {
