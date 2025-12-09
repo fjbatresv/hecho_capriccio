@@ -84,14 +84,27 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem(CART_KEY, JSON.stringify(cart));
     }
 
+    /**
+     * Calculate the total quantity of all items currently in the cart.
+     * @returns {number} The sum of `qty` values for every item in the cart.
+     */
     function getCartTotal() {
         return cart.reduce((sum, item) => sum + item.qty, 0);
     }
 
+    /**
+     * Check whether the cart contains any preorder items.
+     *
+     * @returns {boolean} `true` if the cart contains at least one item whose name is listed in `PREORDER_ITEMS`, `false` otherwise.
+     */
     function hasPreorderItems() {
         return cart.some(item => PREORDER_ITEMS.includes(item.name));
     }
 
+    /**
+     * Build a WhatsApp send URL with a pre-filled message describing the current cart and any preorder note.
+     * @returns {string} The WhatsApp API URL including the phone number and an URL-encoded message; the message lists cart items when present or a generic greeting when empty, and appends the preorder note if the cart contains preorder items.
+     */
     function buildWhatsappUrl() {
         const baseMessage = 'Hola, quiero pedir roles de canela.';
         let detail = cart.length
