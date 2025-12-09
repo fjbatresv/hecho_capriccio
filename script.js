@@ -54,6 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Carrito en memoria
     const CART_KEY = 'hecho_capriccio_cart';
     const WHATSAPP_PHONE = '50240769591';
+    const PREORDER_ITEMS = [
+        'Nutella Oreo (Rosca Roll 12 porciones)',
+        'Frutilla (Rosca Roll 12 porciones)',
+    ];
+    const PREORDER_NOTE = 'Nota: los sabores Nutella Oreo y Frutilla solo están disponibles como Rosca Roll de 12 porciones para entrega el 23 o 24 de diciembre, bajo pedido. Indica tu fecha preferida.';
     let cart = loadCart();
 
     const cartFloating = document.querySelector('.cart-floating');
@@ -83,11 +88,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return cart.reduce((sum, item) => sum + item.qty, 0);
     }
 
+    function hasPreorderItems() {
+        return cart.some(item => PREORDER_ITEMS.includes(item.name));
+    }
+
     function buildWhatsappUrl() {
         const baseMessage = 'Hola, quiero pedir roles de canela.';
-        const detail = cart.length
+        let detail = cart.length
             ? 'Hola, quiero pedir:\n' + cart.map(item => `- ${item.name} x${item.qty}`).join('\n')
             : baseMessage;
+
+        if (cart.length && hasPreorderItems()) {
+            detail += `\n\n${PREORDER_NOTE}`;
+        }
 
         return `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${encodeURIComponent(detail)}`;
     }
