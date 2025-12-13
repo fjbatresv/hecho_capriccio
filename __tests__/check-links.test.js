@@ -21,6 +21,7 @@ describe('scripts/check-links.js', () => {
 
   afterEach(() => {
     jest.restoreAllMocks();
+    delete global.__MOCK_LINKINATOR__;
   });
 
   test('sale sin errores cuando no hay enlaces rotos', async () => {
