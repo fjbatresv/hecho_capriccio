@@ -28,53 +28,58 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileBtn = document.querySelector('.mobile-menu-btn');
   const navLinks = document.querySelector('.nav-links');
 
-  if (mobileBtn) {
+  if (mobileBtn && navLinks) {
     mobileBtn.addEventListener('click', () => {
       navLinks.classList.toggle('active');
     });
   }
 
   // Smooth Scroll for Anchor Links
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      navLinks.classList.remove('active'); // Close mobile menu on click
+  if (navLinks) {
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        navLinks.classList.remove('active'); // Close mobile menu on click
 
-      const targetId = this.getAttribute('href');
-      if (targetId === '#') return;
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
 
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        const headerOffset = 80;
-        const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + globalThis.pageYOffset - headerOffset;
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          const headerOffset = 80;
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + globalThis.pageYOffset - headerOffset;
 
-        globalThis.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth',
-        });
-      }
+          globalThis.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth',
+          });
+        }
+      });
     });
-  });
+  }
 
   // Intersection Observer for Animations
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px',
-  };
+  const animatedElements = document.querySelectorAll('.fade-in-up');
+  if ('IntersectionObserver' in globalThis) {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px',
+    };
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target); // Only animate once
-      }
-    });
-  }, observerOptions);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target); // Only animate once
+        }
+      });
+    }, observerOptions);
 
-  document.querySelectorAll('.fade-in-up').forEach((el) => {
-    observer.observe(el);
-  });
+    animatedElements.forEach((el) => observer.observe(el));
+  } else {
+    animatedElements.forEach((el) => el.classList.add('visible'));
+  }
 
   // Carrito en memoria
   const CartUtils = globalThis.CartUtils;
@@ -118,6 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
    * Muestra u oculta secciones y botones, y actualiza los enlaces de WhatsApp.
    */
   function renderCart() {
+    if (!cartCount || !cartItems || !cartEmpty || !cartWhatsappBtn || !cartClearBtn) {
+      throw new Error('Elementos críticos del carrito no están disponibles en el DOM');
+    }
+
     const total = getCartTotal(cart);
     cartCount.textContent = total;
     cartItems.innerHTML = '';

@@ -43,6 +43,23 @@ describe('cart-utils', () => {
     expect(loadCart(storage)).toEqual([]);
   });
 
+  test('loadCart normaliza y filtra datos corruptos', () => {
+    const storage = {
+      getItem: jest.fn(() =>
+        JSON.stringify([
+          null,
+          'texto',
+          { name: '', qty: 2 },
+          { name: 'Bueno', qty: '3' },
+          { name: 'Negativo', qty: -2 },
+          { name: 'NoNumero', qty: 'abc' },
+        ])
+      ),
+    };
+
+    expect(loadCart(storage)).toEqual([{ name: 'Bueno', qty: 3 }]);
+  });
+
   test('loadCart usa localStorage cuando está disponible', () => {
     const getItemSpy = jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
     expect(loadCart()).toEqual([]);
@@ -50,21 +67,29 @@ describe('cart-utils', () => {
   });
 
   test('loadCart returns [] cuando no hay storage disponible', () => {
-    const originalLocalStorage = globalThis.localStorage;
-    delete globalThis.localStorage;
+    const originalLocalStorage = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
+    Object.defineProperty(globalThis, 'localStorage', { value: undefined, configurable: true });
 
     expect(loadCart()).toEqual([]);
 
-    globalThis.localStorage = originalLocalStorage;
+    if (originalLocalStorage) {
+      Object.defineProperty(globalThis, 'localStorage', originalLocalStorage);
+    } else {
+      delete globalThis.localStorage;
+    }
   });
 
   test('persistCart is resilient when storage missing or throws', () => {
     expect(() => persistCart([{ name: 'A', qty: 1 }])).not.toThrow();
 
-    const originalLocalStorage = globalThis.localStorage;
-    delete globalThis.localStorage;
+    const originalLocalStorage = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
+    Object.defineProperty(globalThis, 'localStorage', { value: undefined, configurable: true });
     expect(() => persistCart([{ name: 'A', qty: 1 }])).not.toThrow();
-    globalThis.localStorage = originalLocalStorage;
+    if (originalLocalStorage) {
+      Object.defineProperty(globalThis, 'localStorage', originalLocalStorage);
+    } else {
+      delete globalThis.localStorage;
+    }
 
     const storage = {
       setItem: jest.fn(() => {
@@ -92,6 +117,15 @@ describe('cart-utils', () => {
 
     const untouched = updateItemQuantity(incremented, 'Inexistente', 1);
     expect(untouched).toEqual(incremented);
+  });
+
+  test('addItemToCart y updateItemQuantity toleran cantidades no numéricas', () => {
+    const initial = [{ name: 'Rol', qty: 'foo' }];
+    const added = addItemToCart(initial, 'Rol');
+    expect(added.find((item) => item.name === 'Rol')?.qty).toBe(1);
+
+    const updated = updateItemQuantity([{ name: 'Rol', qty: 2 }], 'Rol', 'no-num');
+    expect(updated.find((item) => item.name === 'Rol')?.qty).toBe(2);
   });
 
   test('updateItemQuantity increases qty without removal when delta is positive', () => {

@@ -26,6 +26,34 @@ function safeStorage(storage) {
 }
 
 /**
+ * Normaliza y filtra un array de items para evitar valores inesperados.
+ * @param {unknown} value Valor a normalizar.
+ * @returns {Array<{name: string, qty: number}>}
+ */
+function normalizeCart(value) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((item) => item && typeof item === 'object')
+    .map((item) => {
+      const name = typeof item.name === 'string' ? item.name : '';
+      const qty = Number.isFinite(Number(item.qty)) ? Math.max(Number(item.qty), 0) : 0;
+      return { name, qty };
+    })
+    .filter((item) => item.name && item.qty > 0);
+}
+
+/**
+ * Normaliza un valor numérico, devolviendo un fallback cuando no es válido.
+ * @param {unknown} value Valor a normalizar.
+ * @param {number} [fallback=0] Valor por defecto si no es numérico.
+ * @returns {number}
+ */
+function normalizeQty(value, fallback = 0) {
+  const num = Number(value);
+  return Number.isFinite(num) ? num : fallback;
+}
+
+/**
  * Carga el carrito desde storage.
  * @param {Storage} [storage] Storage opcional para pruebas.
  * @returns {Array<{name: string, qty: number}>} Carrito cargado o vacío si no hay datos válidos.
@@ -37,7 +65,7 @@ function loadCart(storage) {
     const saved = store.getItem(CART_KEY);
     if (!saved) return [];
     const parsed = JSON.parse(saved);
-    return Array.isArray(parsed) ? parsed : [];
+    return normalizeCart(parsed);
   } catch (err) {
     console.warn('No se pudo leer el carrito guardado', err);
     return [];
@@ -66,7 +94,8 @@ function persistCart(cart, storage) {
  * @returns {number} Total de unidades.
  */
 function getCartTotal(cart = []) {
-  return cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+  const normalized = normalizeCart(cart);
+  return normalized.reduce((sum, item) => sum + (item.qty || 0), 0);
 }
 
 /**
@@ -75,7 +104,7 @@ function getCartTotal(cart = []) {
  * @returns {boolean} `true` cuando hay preventa.
  */
 function hasPreorderItems(cart = []) {
-  return cart.some((item) => PREORDER_ITEMS.has(item.name));
+  return normalizeCart(cart).some((item) => PREORDER_ITEMS.has(item.name));
 }
 
 /**
@@ -86,11 +115,12 @@ function hasPreorderItems(cart = []) {
  */
 function buildWhatsappMessage(cart = [], note = PREORDER_NOTE) {
   const baseMessage = 'Hola, quiero pedir roles de canela.';
-  if (!cart.length) return baseMessage;
+  const normalized = normalizeCart(cart);
+  if (!normalized.length) return baseMessage;
 
   let detail =
-    'Hola, quiero pedir:\n' + cart.map((item) => `- ${item.name} x${item.qty}`).join('\n');
-  if (hasPreorderItems(cart)) {
+    'Hola, quiero pedir:\n' + normalized.map((item) => `- ${item.name} x${item.qty}`).join('\n');
+  if (hasPreorderItems(normalized)) {
     detail += `\n\n${note}`;
   }
 
@@ -117,12 +147,12 @@ function buildWhatsappUrl(cart = [], phone = WHATSAPP_PHONE, note = PREORDER_NOT
  * @returns {Array<{name: string, qty: number}>} Nuevo carrito con el ítem agregado.
  */
 function addItemToCart(cart, name) {
-  const baseCart = Array.isArray(cart) ? cart : [];
+  const baseCart = normalizeCart(cart);
   if (!name) return baseCart;
   const next = baseCart.map((item) => ({ ...item }));
   const existing = next.find((item) => item.name === name);
   if (existing) {
-    existing.qty += 1;
+    existing.qty = normalizeQty(existing.qty, 0) + 1;
     return next;
   }
   return [...next, { name, qty: 1 }];
@@ -136,12 +166,14 @@ function addItemToCart(cart, name) {
  * @returns {Array<{name: string, qty: number}>} Carrito resultante.
  */
 function updateItemQuantity(cart, name, delta) {
-  const baseCart = Array.isArray(cart) ? cart : [];
+  const baseCart = normalizeCart(cart);
   const next = baseCart.map((item) => ({ ...item }));
   const index = next.findIndex((item) => item.name === name);
   if (index === -1) return next;
 
-  next[index].qty += delta;
+  const safeDelta = normalizeQty(delta, 0);
+  const currentQty = normalizeQty(next[index].qty, 0);
+  next[index].qty = currentQty + safeDelta;
   if (next[index].qty <= 0) {
     next.splice(index, 1);
   }

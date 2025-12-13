@@ -21,6 +21,8 @@ describe('scripts/check-links.js', () => {
 
   afterEach(() => {
     jest.restoreAllMocks();
+    delete global.__MOCK_LINKINATOR__;
+    process.exitCode = 0;
   });
 
   test('sale sin errores cuando no hay enlaces rotos', async () => {
@@ -43,13 +45,15 @@ describe('scripts/check-links.js', () => {
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     const exitSpy = jest.spyOn(process, 'exit').mockImplementation(() => {});
+    const exitCodeSpy = jest.spyOn(process, 'exitCode', 'set');
     global.__MOCK_LINKINATOR__ = { LinkChecker };
 
     await import('../scripts/check-links.mjs');
 
     expect(warnSpy).toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
-    expect(exitSpy).toHaveBeenCalledWith(0);
+    expect(exitSpy).not.toHaveBeenCalled();
+    expect(exitCodeSpy).toHaveBeenCalledWith(1);
   });
 
   test('falla cuando hay enlaces rotos', async () => {
