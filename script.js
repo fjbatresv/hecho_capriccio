@@ -1,3 +1,7 @@
+/**
+ * Inicializa Sentry en el navegador usando los metadatos configurados en `index.html`.
+ * Ejecuta la configuración lo antes posible para capturar errores y sesiones.
+ */
 (() => {
   const sentryDsn = document.querySelector('meta[name="sentry-dsn"]')?.content?.trim();
   const sentryRelease = document.querySelector('meta[name="sentry-release"]')?.content?.trim();
@@ -16,6 +20,9 @@
   }
 })();
 
+/**
+ * Arranca la UI una vez que el DOM está listo: navegación, animaciones y carrito.
+ */
 document.addEventListener('DOMContentLoaded', () => {
   // Mobile Menu Toggle
   const mobileBtn = document.querySelector('.mobile-menu-btn');
