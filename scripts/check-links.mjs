@@ -23,11 +23,14 @@ try {
     process.exit(1);
   }
 } catch (err) {
-  if (err?.message?.includes('port')) {
+  const isAddrInUse =
+    err?.code === 'EADDRINUSE' ||
+    (typeof err?.message === 'string' && /addr|port/i.test(err.message));
+  if (isAddrInUse) {
     console.warn(
       'Link check skipped: no se pudo iniciar el servidor embebido (entorno sin permisos de red).'
     );
-    process.exit(0);
+    process.exitCode = process.env.NODE_ENV === 'test' ? 1 : 0;
   } else {
     console.error(err);
     process.exit(1);
