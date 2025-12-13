@@ -3,6 +3,7 @@ node_modules/
 
 # Coverage reports
 coverage/
+doc-coverage/
 
 # Logs
 npm-debug.log*

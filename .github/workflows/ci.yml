@@ -28,6 +28,9 @@ jobs:
       - name: Tests with coverage
         run: npm run test:coverage
 
+      - name: Documentation coverage
+        run: npm run doc:coverage
+
       - name: Validate HTML
         run: npm run html-validate
 
