@@ -43,6 +43,17 @@ function normalizeCart(value) {
 }
 
 /**
+ * Normaliza un valor numérico, devolviendo un fallback cuando no es válido.
+ * @param {unknown} value Valor a normalizar.
+ * @param {number} [fallback=0] Valor por defecto si no es numérico.
+ * @returns {number}
+ */
+function normalizeQty(value, fallback = 0) {
+  const num = Number(value);
+  return Number.isFinite(num) ? num : fallback;
+}
+
+/**
  * Carga el carrito desde storage.
  * @param {Storage} [storage] Storage opcional para pruebas.
  * @returns {Array<{name: string, qty: number}>} Carrito cargado o vacío si no hay datos válidos.
@@ -141,7 +152,7 @@ function addItemToCart(cart, name) {
   const next = baseCart.map((item) => ({ ...item }));
   const existing = next.find((item) => item.name === name);
   if (existing) {
-    existing.qty += 1;
+    existing.qty = normalizeQty(existing.qty, 0) + 1;
     return next;
   }
   return [...next, { name, qty: 1 }];
@@ -160,7 +171,9 @@ function updateItemQuantity(cart, name, delta) {
   const index = next.findIndex((item) => item.name === name);
   if (index === -1) return next;
 
-  next[index].qty += delta;
+  const safeDelta = normalizeQty(delta, 0);
+  const currentQty = normalizeQty(next[index].qty, 0);
+  next[index].qty = currentQty + safeDelta;
   if (next[index].qty <= 0) {
     next.splice(index, 1);
   }
