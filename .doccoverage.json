@@ -1,6 +1,5 @@
 {
   "source": "./.doccov-src",
-  "framework": "react",
   "excludedPaths": [
     "/__tests__/",
     "/coverage/",
