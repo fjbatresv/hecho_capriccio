@@ -8,7 +8,7 @@ const REPORT_DIR = join(ROOT, 'doc-coverage');
 const REPORT_FILE = join(REPORT_DIR, 'docCoverageReport.json');
 const THRESHOLD = Number(process.env.DOC_COVERAGE_THRESHOLD ?? 80);
 const REPORT_ONLY = process.argv.includes('--report-only');
-const FILES_TO_CHECK = ['script.js', 'cart-utils.js', 'scripts/check-links.js'];
+const FILES_TO_CHECK = ['script.js', 'cart-utils.js', 'scripts/check-links.mjs'];
 const DOC_COVERAGE_BIN = require.resolve('doc-coverage/bin/docCoverage');
 
 rmSync(REPORT_DIR, { recursive: true, force: true });

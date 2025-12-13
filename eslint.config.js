@@ -67,5 +67,23 @@ module.exports = [
       'prettier/prettier': 'warn',
     },
   },
+  {
+    files: ['scripts/**/*.mjs'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+      },
+    },
+    plugins: {
+      prettier: eslintPluginPrettier,
+    },
+    rules: {
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'prettier/prettier': 'warn',
+    },
+  },
   eslintConfigPrettier,
 ];
