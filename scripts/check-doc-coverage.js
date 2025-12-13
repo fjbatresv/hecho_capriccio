@@ -9,6 +9,7 @@ const REPORT_FILE = join(REPORT_DIR, 'docCoverageReport.json');
 const THRESHOLD = Number(process.env.DOC_COVERAGE_THRESHOLD ?? 80);
 const REPORT_ONLY = process.argv.includes('--report-only');
 const FILES_TO_CHECK = ['script.js', 'cart-utils.js', 'scripts/check-links.js'];
+const DOC_COVERAGE_BIN = require.resolve('doc-coverage/bin/docCoverage');
 
 rmSync(REPORT_DIR, { recursive: true, force: true });
 rmSync(SOURCE_DIR, { recursive: true, force: true });
@@ -21,7 +22,10 @@ FILES_TO_CHECK.forEach((relativePath) => {
   copyFileSync(from, to);
 });
 
-execSync('npx doc-coverage', { stdio: 'inherit' });
+execSync(`node "${DOC_COVERAGE_BIN}"`, {
+  stdio: 'inherit',
+  env: { ...process.env, PATH: process.env.PATH },
+});
 
 if (!existsSync(REPORT_FILE)) {
   throw new TypeError('Doc coverage report not found after running doc-coverage.');
