@@ -51,7 +51,7 @@ describe('cart-utils', () => {
 
   test('loadCart returns [] cuando no hay storage disponible', () => {
     const originalLocalStorage = globalThis.localStorage;
-    delete global.localStorage;
+    delete globalThis.localStorage;
 
     expect(loadCart()).toEqual([]);
 
@@ -62,7 +62,7 @@ describe('cart-utils', () => {
     expect(() => persistCart([{ name: 'A', qty: 1 }])).not.toThrow();
 
     const originalLocalStorage = globalThis.localStorage;
-    delete global.localStorage;
+    delete globalThis.localStorage;
     expect(() => persistCart([{ name: 'A', qty: 1 }])).not.toThrow();
     globalThis.localStorage = originalLocalStorage;
 

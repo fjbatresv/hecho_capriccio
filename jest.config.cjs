@@ -1,6 +1,6 @@
 module.exports = {
   testEnvironment: 'jsdom',
-  collectCoverageFrom: ['cart-utils.js'],
+  collectCoverageFrom: ['cart-utils.js', 'script.js', 'scripts/check-links.js'],
   coverageThreshold: {
     global: {
       branches: 80,

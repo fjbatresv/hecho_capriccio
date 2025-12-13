@@ -7,7 +7,7 @@
       release: sentryRelease || undefined,
       tracesSampleRate: 0.1,
       replaysSessionSampleRate: 0.05,
-      replaysOnErrorSampleRate: 1.0,
+      replaysOnErrorSampleRate: 1,
       integrations: [
         globalThis.Sentry.browserTracingIntegration(),
         globalThis.Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false }),
