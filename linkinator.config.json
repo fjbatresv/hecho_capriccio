@@ -1,5 +1,5 @@
 {
   "recurse": true,
-  "skip": ["^https?://(?!localhost|127\\.0\\.0\\.1)"],
+  "skip": ["^https?://(localhost|127\\.0\\.0\\.1)"],
   "verbosity": "error"
 }
