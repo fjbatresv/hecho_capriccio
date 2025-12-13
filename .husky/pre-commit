@@ -1,6 +1,4 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
 npm run lint || exit 1
 npm run prettier:check || exit 1
 npm run test:coverage || exit 1
