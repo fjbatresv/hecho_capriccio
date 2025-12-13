@@ -1,0 +1,41 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "America/Mexico_City"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore"
+    target-branch: "develop"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "America/Mexico_City"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore"
+    target-branch: "develop"
+    labels:
+      - "dependencies"
+      - "npm"
+    ignore:
+      - dependency-name: "node"
+    groups:
+      dev-deps:
+        dependency-type: "development"
+        update-types: ["patch", "minor"]

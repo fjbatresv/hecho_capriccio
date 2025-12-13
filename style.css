@@ -29,7 +29,7 @@ html {
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: var(--bg-light);
   color: var(--text-body);
   line-height: 1.6;
@@ -40,7 +40,7 @@ h1,
 h2,
 h3,
 .logo {
-  font-family: "Fredoka One", cursive;
+  font-family: 'Fredoka One', cursive;
   color: var(--primary-blue);
 }
 
@@ -93,16 +93,16 @@ img {
 }
 
 .logo {
-    font-size: 1.5rem;
-    color: var(--accent-orange);
-    display: flex;
-    align-items: center;
+  font-size: 1.5rem;
+  color: var(--accent-orange);
+  display: flex;
+  align-items: center;
 }
 
 .logo img {
-    height: 60px;
-    width: auto;
-    object-fit: contain;
+  height: 60px;
+  width: auto;
+  object-fit: contain;
 }
 
 .nav-links {
@@ -223,27 +223,27 @@ img {
 }
 
 .hero-gallery {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    transform: rotate(-3deg);
-    transition: transform 0.5s ease;
-    background: white;
-    padding: 15px;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-soft);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  transform: rotate(-3deg);
+  transition: transform 0.5s ease;
+  background: white;
+  padding: 15px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
 }
 
 .hero-gallery:hover {
-    transform: rotate(0deg) scale(1.02);
+  transform: rotate(0deg) scale(1.02);
 }
 
 .hero-img-item {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: var(--radius-md);
-    display: block !important;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  display: block !important;
 }
 
 /* Products Section */
@@ -336,9 +336,9 @@ img {
 }
 
 .product-pill.accent {
-  background: rgba(255, 122, 48, 0.15);
-  color: #c04900;
-  border-color: rgba(255, 122, 48, 0.2);
+  background: #fff4ec;
+  color: #8b2a00;
+  border-color: #ffbe96;
 }
 
 .product-pill.neutral {
@@ -477,7 +477,7 @@ footer {
 
 .footer-links h4 {
   margin-bottom: 1rem;
-  font-family: "Fredoka One", cursive;
+  font-family: 'Fredoka One', cursive;
 }
 
 .social-links {
@@ -509,7 +509,7 @@ footer {
 
 /* Brand-specific colors */
 .social-instagram:hover {
-  color: #E4405F;
+  color: #e4405f;
 }
 
 .social-tiktok:hover {
@@ -517,7 +517,7 @@ footer {
 }
 
 .social-whatsapp:hover {
-  color: #25D366;
+  color: #25d366;
 }
 
 .footer-bottom {
@@ -547,7 +547,9 @@ footer {
 .fade-in-up {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
 .fade-in-up.visible {
@@ -594,7 +596,9 @@ footer {
   gap: 0.5rem;
   box-shadow: var(--shadow-soft);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .cart-toggle:hover {

@@ -1,0 +1,19 @@
+{
+  "source": "./.doccov-src",
+  "framework": "react",
+  "excludedPaths": [
+    "/__tests__/",
+    "/coverage/",
+    "/.git/",
+    "/.husky/",
+    "/.github/",
+    "/dist/",
+    "/build/",
+    "/docs/",
+    "/.vscode/"
+  ],
+  "excludedComponentPaths": [],
+  "foldersWithComponentFiles": [],
+  "storiesFolderPath": "",
+  "ecmaVersion": 2022
+}

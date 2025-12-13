@@ -1,0 +1,32 @@
+language: es
+early_access: true
+reviews:
+  high_level_summary: true
+  request_changes_workflow: true
+  review_status: true
+  poem: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - main
+      - develop
+    ignore_title_keywords:
+      - 'WIP'
+      - 'Draft'
+    triggers:
+      - pull_request.opened
+      - pull_request.reopened
+      - pull_request.synchronize
+    instructions: |
+      Prioriza defectos, regresiones y riesgos de seguridad.
+      Señala problemas de accesibilidad y mantenibilidad.
+      Evita comentarios triviales o puramente estilísticos.
+  path_filters:
+    - '!assets/**'
+    - '!**/*.md'
+    - '!.github/**'
+
+chat:
+  auto_reply: false
