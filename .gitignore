@@ -4,6 +4,7 @@ node_modules/
 # Coverage reports
 coverage/
 doc-coverage/
+.doccov-src/
 
 # Logs
 npm-debug.log*

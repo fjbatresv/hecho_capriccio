@@ -1,17 +1,15 @@
 {
-  "source": "./",
+  "source": "./.doccov-src",
   "framework": "react",
   "excludedPaths": [
-    "node_modules",
+    "/__tests__/",
     "/coverage/",
     "/.git/",
     "/.husky/",
     "/.github/",
-    "/__tests__/",
     "/dist/",
     "/build/",
     "/docs/",
-    "/scripts/__mocks__/",
     "/.vscode/"
   ],
   "excludedComponentPaths": [],

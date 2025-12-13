@@ -15,7 +15,7 @@
     "prettier:write": "prettier --write \"**/*.{js,css,html,json,yml,yaml,md}\"",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "doc:coverage:report": "npx doc-coverage",
+    "doc:coverage:report": "node scripts/check-doc-coverage.js --report-only",
     "doc:coverage": "node scripts/check-doc-coverage.js",
     "html-validate": "html-validate index.html",
     "check:links": "node scripts/check-links.js",
