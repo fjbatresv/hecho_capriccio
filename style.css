@@ -336,9 +336,9 @@ img {
 }
 
 .product-pill.accent {
-  background: rgba(255, 122, 48, 0.15);
-  color: #c04900;
-  border-color: rgba(255, 122, 48, 0.2);
+  background: #fff4ec;
+  color: #8b2a00;
+  border-color: #ffbe96;
 }
 
 .product-pill.neutral {

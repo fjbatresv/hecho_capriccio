@@ -1,0 +1,48 @@
+name: Snyk Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 6 * * 1"
+
+env:
+  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+jobs:
+  snyk-code:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+
+      - name: Install Snyk CLI
+        if: env.SNYK_TOKEN != ''
+        uses: snyk/actions/setup@9adf32b1121593767fc3c057af55b55db032dc04 # v1.0.0
+
+      - name: Snyk Code scan
+        if: env.SNYK_TOKEN != ''
+        env:
+          SNYK_TOKEN: ${{ env.SNYK_TOKEN }}
+        run: snyk code test --severity-threshold=medium --sarif-file-output=snyk-code.sarif
+
+      - name: Upload SARIF to Security tab
+        if: env.SNYK_TOKEN != ''
+        uses: github/codeql-action/upload-sarif@f47c8e6a9bd05ef3ee422fc8d8663be7fe4bdc61 # v3.31.8
+        with:
+          sarif_file: snyk-code.sarif
+
+      - name: Skip when SNYK_TOKEN missing
+        if: env.SNYK_TOKEN == ''
+        run: echo "Secret SNYK_TOKEN no configurada; se omite el escaneo de Snyk."

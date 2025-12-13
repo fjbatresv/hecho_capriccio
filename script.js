@@ -54,10 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Carrito en memoria
     const CART_KEY = 'hecho_capriccio_cart';
     const WHATSAPP_PHONE = '50240769591';
-    const PREORDER_ITEMS = [
+    const PREORDER_ITEMS = new Set([
         'Nutella Oreo (Rosca Roll 12 porciones)',
         'Frutilla (Rosca Roll 12 porciones)',
-    ];
+    ]);
     const PREORDER_NOTE = 'Nota: los sabores Nutella Oreo y Frutilla solo están disponibles como Rosca Roll de 12 porciones para entrega el 23 o 24 de diciembre, bajo pedido. Indica tu fecha preferida.';
     let cart = loadCart();
 
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {boolean} `true` if the cart contains at least one item whose name is listed in `PREORDER_ITEMS`, `false` otherwise.
      */
     function hasPreorderItems() {
-        return cart.some(item => PREORDER_ITEMS.includes(item.name));
+        return cart.some(item => PREORDER_ITEMS.has(item.name));
     }
 
     /**
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (!total) {
+        if (total === 0) {
             cartEmpty.style.display = 'block';
             cartWhatsappBtn.disabled = true;
             cartClearBtn.disabled = true;
