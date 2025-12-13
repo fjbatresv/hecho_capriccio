@@ -116,9 +116,10 @@ function buildWhatsappUrl(cart = [], phone = WHATSAPP_PHONE, note = PREORDER_NOT
  * @param {string} name Nombre del producto a añadir.
  * @returns {Array<{name: string, qty: number}>} Nuevo carrito con el ítem agregado.
  */
-function addItemToCart(cart = [], name) {
-  if (!name) return cart;
-  const next = cart.map((item) => ({ ...item }));
+function addItemToCart(cart, name) {
+  const baseCart = Array.isArray(cart) ? cart : [];
+  if (!name) return baseCart;
+  const next = baseCart.map((item) => ({ ...item }));
   const existing = next.find((item) => item.name === name);
   if (existing) {
     existing.qty += 1;
@@ -134,8 +135,9 @@ function addItemToCart(cart = [], name) {
  * @param {number} delta Diferencia a aplicar (positiva o negativa).
  * @returns {Array<{name: string, qty: number}>} Carrito resultante.
  */
-function updateItemQuantity(cart = [], name, delta) {
-  const next = cart.map((item) => ({ ...item }));
+function updateItemQuantity(cart, name, delta) {
+  const baseCart = Array.isArray(cart) ? cart : [];
+  const next = baseCart.map((item) => ({ ...item }));
   const index = next.findIndex((item) => item.name === name);
   if (index === -1) return next;
 

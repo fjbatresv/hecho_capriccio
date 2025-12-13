@@ -1,16 +1,16 @@
 (() => {
   const sentryDsn = document.querySelector('meta[name="sentry-dsn"]')?.content?.trim();
   const sentryRelease = document.querySelector('meta[name="sentry-release"]')?.content?.trim();
-  if (sentryDsn && window.Sentry) {
-    window.Sentry.init({
+  if (sentryDsn && globalThis.Sentry) {
+    globalThis.Sentry.init({
       dsn: sentryDsn,
       release: sentryRelease || undefined,
       tracesSampleRate: 0.1,
       replaysSessionSampleRate: 0.05,
       replaysOnErrorSampleRate: 1.0,
       integrations: [
-        window.Sentry.browserTracingIntegration(),
-        window.Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false }),
+        globalThis.Sentry.browserTracingIntegration(),
+        globalThis.Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false }),
       ],
     });
   }
@@ -40,9 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (targetElement) {
         const headerOffset = 80;
         const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        const offsetPosition = elementPosition + globalThis.pageYOffset - headerOffset;
 
-        window.scrollTo({
+        globalThis.scrollTo({
           top: offsetPosition,
           behavior: 'smooth',
         });
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Carrito en memoria
-  const CartUtils = window.CartUtils;
+  const CartUtils = globalThis.CartUtils;
   if (!CartUtils) {
     console.error('Cart utilities no disponibles');
     return;

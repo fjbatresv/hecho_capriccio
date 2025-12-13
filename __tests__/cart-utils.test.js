@@ -50,21 +50,21 @@ describe('cart-utils', () => {
   });
 
   test('loadCart returns [] cuando no hay storage disponible', () => {
-    const originalLocalStorage = global.localStorage;
+    const originalLocalStorage = globalThis.localStorage;
     delete global.localStorage;
 
     expect(loadCart()).toEqual([]);
 
-    global.localStorage = originalLocalStorage;
+    globalThis.localStorage = originalLocalStorage;
   });
 
   test('persistCart is resilient when storage missing or throws', () => {
     expect(() => persistCart([{ name: 'A', qty: 1 }])).not.toThrow();
 
-    const originalLocalStorage = global.localStorage;
+    const originalLocalStorage = globalThis.localStorage;
     delete global.localStorage;
     expect(() => persistCart([{ name: 'A', qty: 1 }])).not.toThrow();
-    global.localStorage = originalLocalStorage;
+    globalThis.localStorage = originalLocalStorage;
 
     const storage = {
       setItem: jest.fn(() => {
