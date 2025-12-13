@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Coverage reports
+coverage/
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# OS files
+.DS_Store
+
+# Editor/Tooling
+.vscode/
+.idea/
+
+# Husky internals
+.husky/_/

@@ -10,11 +10,11 @@ reviews:
     enabled: true
     drafts: false
     base_branches:
-        - main
-        - develop
+      - main
+      - develop
     ignore_title_keywords:
-        - "WIP"
-        - "Draft"
+      - 'WIP'
+      - 'Draft'
     triggers:
       - pull_request.opened
       - pull_request.reopened
@@ -25,9 +25,9 @@ reviews:
       Evita comentarios triviales o puramente estilísticos.
   path_filters:
     ignore:
-      - "assets/**"
-      - "**/*.md"
-      - ".github/**"
+      - 'assets/**'
+      - '**/*.md'
+      - '.github/**'
 
 chat:
   auto_reply: false

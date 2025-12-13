@@ -9,6 +9,11 @@ env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
   S3_BUCKET: ${{ secrets.S3_BUCKET }}
   CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+  SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+  SENTRY_RELEASE: ${{ github.sha }}
 
 jobs:
   deploy:
@@ -20,7 +25,38 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: 22
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Inject Sentry DSN y release en index.html
+        if: env.SENTRY_DSN != ''
+        run: |
+          RELEASE=${SENTRY_RELEASE:-${GITHUB_SHA}}
+          perl -0pi -e "s|(<meta name=\"sentry-dsn\" content=\")[^\"]*(\"\\s*/?>)|\\1${SENTRY_DSN}\\2|" index.html
+          perl -0pi -e "s|(<meta name=\"sentry-release\" content=\")[^\"]*(\"\\s*/?>)|\\1${RELEASE}\\2|" index.html
+
+      - name: Instalar sentry-cli
+        if: env.SENTRY_AUTH_TOKEN != '' && env.SENTRY_ORG != '' && env.SENTRY_PROJECT != ''
+        run: curl -sL https://sentry.io/get-cli/ | bash
+
+      - name: Publicar release en Sentry y subir sourcemaps
+        if: env.SENTRY_AUTH_TOKEN != '' && env.SENTRY_ORG != '' && env.SENTRY_PROJECT != ''
+        env:
+          SENTRY_AUTH_TOKEN: ${{ env.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ env.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ env.SENTRY_PROJECT }}
+        run: |
+          RELEASE=${SENTRY_RELEASE:-${GITHUB_SHA}}
+          sentry-cli releases new "$RELEASE"
+          sentry-cli releases set-commits --auto "$RELEASE"
+          if ls assets/**/*.map >/dev/null 2>&1 || ls **/*.map >/dev/null 2>&1; then
+            sentry-cli releases files "$RELEASE" upload-sourcemaps . \
+              --url-prefix "~/" \
+              --ext map --ext js --validate --rewrite
+          else
+            echo "No hay sourcemaps para subir a Sentry."
+          fi
+          sentry-cli releases finalize "$RELEASE"
 
       - name: Compress images
         run: |
