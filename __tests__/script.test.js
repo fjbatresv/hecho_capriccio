@@ -200,4 +200,11 @@ describe('script.js UI behavior', () => {
       true
     );
   });
+
+  test('retorna sin inicializar si CartUtils no está disponible', () => {
+    globalThis.CartUtils = undefined;
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    loadScript();
+    expect(errorSpy).toHaveBeenCalledWith('Cart utilities no disponibles');
+  });
 });
