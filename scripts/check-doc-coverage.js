@@ -24,14 +24,14 @@ FILES_TO_CHECK.forEach((relativePath) => {
 execSync('npx doc-coverage', { stdio: 'inherit' });
 
 if (!existsSync(REPORT_FILE)) {
-  throw new Error('Doc coverage report not found after running doc-coverage.');
+  throw new TypeError('Doc coverage report not found after running doc-coverage.');
 }
 
 const report = JSON.parse(readFileSync(REPORT_FILE, 'utf8'));
 const coverage = Number(report?.jsdocCoverage?.coveragePercent ?? 0);
 
 if (Number.isNaN(coverage)) {
-  throw new Error('Doc coverage percentage is not a number.');
+  throw new TypeError('Doc coverage percentage is not a number.');
 }
 
 if (!REPORT_ONLY && coverage < THRESHOLD) {

@@ -6,7 +6,7 @@ const path = require('node:path');
  * Ejecuta la verificación de enlaces con Linkinator sobre `index.html`.
  * Maneja el caso de entornos sin permisos de red evitando fallas ruidosas.
  */
-(async () => {
+async function main() {
   try {
     const checker = new LinkChecker();
     const result = await checker.check({
@@ -31,4 +31,6 @@ const path = require('node:path');
     console.error(err);
     process.exit(1);
   }
-})();
+}
+
+main();

@@ -4,7 +4,7 @@ const eslintPluginPrettier = require('eslint-plugin-prettier');
 
 module.exports = [
   {
-    ignores: ['node_modules', 'coverage', '.husky/_/*', '.github', 'assets'],
+    ignores: ['node_modules', 'coverage', '.husky/_/*', '.github', 'assets', '.doccov-src'],
   },
   js.configs.recommended,
   {
