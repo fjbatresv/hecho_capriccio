@@ -8,6 +8,7 @@
 ![ESLint](https://img.shields.io/badge/Lint-ESLint-4B32C3?logo=eslint&logoColor=white)
 ![Prettier](https://img.shields.io/badge/Code%20Style-Prettier-ff69b4?logo=prettier&logoColor=white)
 ![Jest](https://img.shields.io/badge/Tested%20with-Jest-99424f?logo=jest&logoColor=white)
+![Google Analytics](https://img.shields.io/badge/Analytics-GA4-4285F4?logo=googleanalytics&logoColor=white)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
@@ -61,6 +62,7 @@ Opcional: ajusta `AWS_REGION` en el workflow si no usas `us-east-1`.
 - El carrito se persiste en `localStorage`; al vaciarlo desaparece el FAB de compra.
 - Integración Sentry (opcional): agrega en `index.html` los metas `sentry-dsn` y `sentry-release` con tus valores y deja el CDN de Sentry habilitado. La inicialización usa tracing (10%) y replays (5% de sesiones, 100% on error); ajusta en `script.js` si necesitas otros ratios.
 - En el deploy, si configuras los secretos de Sentry, el workflow inyecta DSN/release en `index.html`, crea release con `sentry-cli` y sube sourcemaps cuando existan.
+- Google Analytics (GA4): el snippet de `gtag.js` está en el `<head>` con el ID `G-MKKPFYXL1G`; si necesitas otro ID, reemplázalo allí.
 
 ## Tooling y calidad
 
