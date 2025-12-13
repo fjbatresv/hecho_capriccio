@@ -123,6 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
    * Muestra u oculta secciones y botones, y actualiza los enlaces de WhatsApp.
    */
   function renderCart() {
+    if (!cartCount || !cartItems || !cartEmpty || !cartWhatsappBtn || !cartClearBtn) {
+      throw new Error('Elementos críticos del carrito no están disponibles en el DOM');
+    }
+
     const total = getCartTotal(cart);
     cartCount.textContent = total;
     cartItems.innerHTML = '';
