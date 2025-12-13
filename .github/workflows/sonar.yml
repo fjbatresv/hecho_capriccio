@@ -25,6 +25,14 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
+      - name: Install dependencies
+        if: env.SONAR_TOKEN != ''
+        run: npm ci
+
+      - name: Test with coverage (for Sonar)
+        if: env.SONAR_TOKEN != ''
+        run: npm run test:coverage
+
       - name: Sonar scan
         if: env.SONAR_TOKEN != ''
         uses: SonarSource/sonarcloud-github-action@ffc3010689be73b8e5ae0c57ce35968afd7909e8 # v5.0.0
