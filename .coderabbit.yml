@@ -24,10 +24,9 @@ reviews:
       Señala problemas de accesibilidad y mantenibilidad.
       Evita comentarios triviales o puramente estilísticos.
   path_filters:
-    ignore:
-      - 'assets/**'
-      - '**/*.md'
-      - '.github/**'
+    - '!assets/**'
+    - '!**/*.md'
+    - '!.github/**'
 
 chat:
   auto_reply: false
