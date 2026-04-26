@@ -4,16 +4,6 @@ const CART_KEY = 'hecho_capriccio_cart';
 /** @type {string} Número de WhatsApp al que se envían los pedidos. */
 const WHATSAPP_PHONE = '50240769591';
 
-/** @type {Set<string>} Listado de productos que requieren preventa. */
-const PREORDER_ITEMS = new Set([
-  'Nutella Oreo (Rosca Roll 12 porciones)',
-  'Frutilla (Rosca Roll 12 porciones)',
-]);
-
-/** @type {string} Nota que se adjunta cuando hay productos de preventa. */
-const PREORDER_NOTE =
-  'Nota: los sabores Nutella Oreo y Frutilla solo están disponibles como Rosca Roll de 12 porciones para entrega el 23 o 24 de diciembre, bajo pedido. Indica tu fecha preferida.';
-
 /**
  * Devuelve el storage a usar, priorizando el provisto o `localStorage` cuando exista.
  * @param {Storage} [storage] Storage opcional para pruebas.
@@ -99,44 +89,27 @@ function getCartTotal(cart = []) {
 }
 
 /**
- * Indica si el carrito contiene al menos un producto de preventa.
- * @param {Array<{name: string, qty: number}>} [cart=[]] Carrito a evaluar.
- * @returns {boolean} `true` cuando hay preventa.
- */
-function hasPreorderItems(cart = []) {
-  return normalizeCart(cart).some((item) => PREORDER_ITEMS.has(item.name));
-}
-
-/**
  * Construye el mensaje de WhatsApp a partir del carrito.
  * @param {Array<{name: string, qty: number}>} [cart=[]] Carrito actual.
- * @param {string} [note=PREORDER_NOTE] Nota adicional para preventa.
  * @returns {string} Mensaje listo para ser codificado.
  */
-function buildWhatsappMessage(cart = [], note = PREORDER_NOTE) {
+function buildWhatsappMessage(cart = []) {
   const baseMessage = 'Hola, quiero pedir roles de canela.';
   const normalized = normalizeCart(cart);
   if (!normalized.length) return baseMessage;
 
-  let detail =
-    'Hola, quiero pedir:\n' + normalized.map((item) => `- ${item.name} x${item.qty}`).join('\n');
-  if (hasPreorderItems(normalized)) {
-    detail += `\n\n${note}`;
-  }
-
-  return detail;
+  return 'Hola, quiero pedir:\n' + normalized.map((item) => `- ${item.name} x${item.qty}`).join('\n');
 }
 
 /**
  * Arma la URL de WhatsApp con el mensaje precargado.
  * @param {Array<{name: string, qty: number}>} [cart=[]] Carrito actual.
  * @param {string} [phone=WHATSAPP_PHONE] Número de destino.
- * @param {string} [note=PREORDER_NOTE] Nota de preventa.
  * @returns {string} URL lista para abrir en el navegador.
  */
-function buildWhatsappUrl(cart = [], phone = WHATSAPP_PHONE, note = PREORDER_NOTE) {
+function buildWhatsappUrl(cart = [], phone = WHATSAPP_PHONE) {
   return `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
-    buildWhatsappMessage(cart, note)
+    buildWhatsappMessage(cart)
   )}`;
 }
 
@@ -183,12 +156,9 @@ function updateItemQuantity(cart, name, delta) {
 const CartUtils = {
   CART_KEY,
   WHATSAPP_PHONE,
-  PREORDER_ITEMS,
-  PREORDER_NOTE,
   loadCart,
   persistCart,
   getCartTotal,
-  hasPreorderItems,
   buildWhatsappMessage,
   buildWhatsappUrl,
   addItemToCart,

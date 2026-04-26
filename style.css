@@ -224,7 +224,7 @@ img {
 
 .hero-gallery {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 15px;
   transform: rotate(-3deg);
   transition: transform 0.5s ease;
