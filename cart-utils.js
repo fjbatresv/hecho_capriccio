@@ -98,7 +98,9 @@ function buildWhatsappMessage(cart = []) {
   const normalized = normalizeCart(cart);
   if (!normalized.length) return baseMessage;
 
-  return 'Hola, quiero pedir:\n' + normalized.map((item) => `- ${item.name} x${item.qty}`).join('\n');
+  return (
+    'Hola, quiero pedir:\n' + normalized.map((item) => `- ${item.name} x${item.qty}`).join('\n')
+  );
 }
 
 /**
