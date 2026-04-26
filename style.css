@@ -317,6 +317,13 @@ img {
   margin-bottom: 1rem;
 }
 
+.product-info .product-price {
+  color: var(--primary-blue);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
 .product-meta {
   display: flex;
   flex-wrap: wrap;
@@ -571,6 +578,9 @@ footer {
 }
 .delay-500 {
   transition-delay: 0.5s;
+}
+.delay-600 {
+  transition-delay: 0.6s;
 }
 
 .cart-floating {
