@@ -224,7 +224,7 @@ img {
 
 .hero-gallery {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 15px;
   transform: rotate(-3deg);
   transition: transform 0.5s ease;
@@ -315,6 +315,13 @@ img {
   font-size: 0.9rem;
   color: #666;
   margin-bottom: 1rem;
+}
+
+.product-info .product-price {
+  color: var(--primary-blue);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0;
 }
 
 .product-meta {
@@ -571,6 +578,9 @@ footer {
 }
 .delay-500 {
   transition-delay: 0.5s;
+}
+.delay-600 {
+  transition-delay: 0.6s;
 }
 
 .cart-floating {

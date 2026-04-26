@@ -1,11 +1,9 @@
 const {
   CART_KEY,
-  PREORDER_NOTE,
   addItemToCart,
   buildWhatsappMessage,
   buildWhatsappUrl,
   getCartTotal,
-  hasPreorderItems,
   loadCart,
   persistCart,
   updateItemQuantity,
@@ -142,33 +140,18 @@ describe('cart-utils', () => {
     expect(total).toBe(4);
   });
 
-  test('hasPreorderItems detects preorder products', () => {
-    const cart = [{ name: 'Frutilla (Rosca Roll 12 porciones)', qty: 1 }];
-    expect(hasPreorderItems(cart)).toBe(true);
-  });
-
-  test('buildWhatsappMessage and URL include preorder note when needed', () => {
-    const cart = [{ name: 'Frutilla (Rosca Roll 12 porciones)', qty: 1 }];
-    const message = buildWhatsappMessage(cart);
-    expect(message).toContain(PREORDER_NOTE);
-
-    const url = buildWhatsappUrl(cart);
-    expect(url).toContain(encodeURIComponent(PREORDER_NOTE));
-  });
-
   test('buildWhatsappMessage returns base message when cart is empty', () => {
     const message = buildWhatsappMessage([]);
     expect(message).toBe('Hola, quiero pedir roles de canela.');
   });
 
-  test('buildWhatsappMessage omits preorder note when cart has no preorder items', () => {
-    const message = buildWhatsappMessage([{ name: 'Rol tradicional', qty: 2 }]);
-    expect(message).not.toContain(PREORDER_NOTE);
+  test('buildWhatsappMessage lists current cart items without preorder note', () => {
+    const message = buildWhatsappMessage([{ name: 'KitKat', qty: 2 }]);
+    expect(message).toBe('Hola, quiero pedir:\n- KitKat x2');
   });
 
   test('funciones usan valores por defecto cuando no se proveen argumentos', () => {
     expect(getCartTotal()).toBe(0);
-    expect(hasPreorderItems()).toBe(false);
 
     const defaultMessage = buildWhatsappMessage();
     expect(defaultMessage).toBe('Hola, quiero pedir roles de canela.');
